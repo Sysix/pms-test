@@ -1,0 +1,5 @@
+<select{{ attributes|formatAttribute }}>
+{% for option in options %}
+    <option{{ option.attributes|formatAttribute }}>{{ option.name }}</option>
+{% endfor %}
+</select>

@@ -1,0 +1,10 @@
+<li {{ wrapperAttributes|formatAttribute }}>
+    <a {{ attributes|formatAttribute }}>{{ label }}</a>
+    {% if subPoints|length %}
+    <ul class="sub-men">
+        {% for point in subPoints %}
+            {{ point.render()|raw }}
+        {% endfor %}
+    </ul>
+    {% endif %}
+</li>

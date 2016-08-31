@@ -1,0 +1,23 @@
+{% extends "admin/base.twig" %}
+
+{% block title %}
+    {{ parent() }} - Dashboard
+{% endblock %}
+
+{% block nav %}
+    {{ parent() }}
+    <li><a href="">Dashboard</a></li>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 panel panel-default">
+            <div class="panel-title">
+                <div class="panel-heading">API Keys</div>
+            </div>
+            <div class="panel-body">
+                {{ apiKeys|length }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

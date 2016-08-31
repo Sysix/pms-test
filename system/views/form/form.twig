@@ -1,0 +1,13 @@
+<form {{ formAttributes|formatAttribute }}>
+    {% for input in hiddenElements  %}
+        {{ input.render()|raw }}
+    {% endfor %}
+
+    {% for element in elements %}
+        {{ element|raw }}
+    {% endfor %}
+
+    {% for button in actionButtons %}
+        {{ button.render()|raw }}
+    {% endfor %}
+</form>

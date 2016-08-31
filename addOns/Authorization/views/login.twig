@@ -1,0 +1,17 @@
+{% extends "admin/base.twig" %}
+
+{% block title %}
+    {{ parent() }} - Login
+{% endblock %}
+
+{% block sidebar %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.render()|raw }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{
+  "Tickets": {
+    "install": true,
+    "active": true
+  },
+  "Authorization": {
+    "install": true,
+    "active": true
+  },
+  "Dashboard": {
+    "install": true,
+    "active": true
+  }
+}

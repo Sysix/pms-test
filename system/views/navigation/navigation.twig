@@ -1,0 +1,5 @@
+<ul {{ attributes|formatAttribute }}>
+    {% for point in points %}
+        {{ point.render()|raw }}
+    {% endfor %}
+</ul>

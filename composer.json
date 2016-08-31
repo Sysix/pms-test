@@ -1,0 +1,30 @@
+{
+  "name": "sysix/pms_one",
+  "description": "A Project Managment System based on a RestFull API",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "require": {
+    "php": ">=5.5.0",
+    "slim/slim": "^3.1",
+    "twig/twig": "^1.24",
+    "vlucas/spot2": "^2.1",
+    "chadicus/slim-oauth2-middleware": "^3.0",
+    "slim/flash": "^0.1.0"
+  },
+  "authors": [
+    {
+      "name": "alexander schlegel",
+      "email": "sysix@sysix-coding.de"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "PmsOne\\": "system/core",
+      "Page\\": "system/pages",
+      "AddOn\\": "addOns"
+    }
+  },
+  "config": {
+    "vendor-dir": "system/vendor"
+  }
+}

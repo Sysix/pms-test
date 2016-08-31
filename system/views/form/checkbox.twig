@@ -1,0 +1,3 @@
+{% for option in options %}
+    <label><input{{ option.attributes|formatAttribute }}> {{ option.name }}</label>
+{% endfor %}
