@@ -44,6 +44,7 @@ class Login extends Controller
         $form->getActionButton('save')->setValue('Absenden');
 
         $this->getView()->addVar('form', $form);
+        $this->getView()->addVar('messages', $this->getMessages()->getView());
 
         return $this->getView()->setTemplate('@authorization/login.twig')->render();
     }
