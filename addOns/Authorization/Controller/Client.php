@@ -2,16 +2,16 @@
 
 namespace AddOn\Authorization\Controller;
 
-use AddOn\Authorization\Model\Client;
+use AddOn\Authorization\Model\Client as ClientModel;
 use PmsOne\Page\Controller;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class OAuth2 extends Controller
+class Client extends Controller
 {
-    public function clientsUpdate(Request $request, Response $response, $args)
+    public function update(Request $request, Response $response, $args)
     {
-        $clients = new Client();
+        $clients = new ClientModel();
 
         try {
             $entity = $clients->getMapper()->where([
@@ -36,9 +36,9 @@ class OAuth2 extends Controller
         }
     }
 
-    public function clientsCreate(Request $request, Response $response)
+    public function create(Request $request, Response $response)
     {
-        $clients = new Client();
+        $clients = new ClientModel();
 
         try {
             $params = $request->getParams();
@@ -53,9 +53,9 @@ class OAuth2 extends Controller
         }
     }
 
-    public function clientsDelete(Request $request, Response $response, $args)
+    public function delete(Request $request, Response $response, $args)
     {
-        $clients = new Client();
+        $clients = new ClientModel();
 
         try {
             $entity = $clients->getMapper()->delete([

@@ -34,13 +34,25 @@ class Authorization extends Controller
         $_POST['client_id'] = 'main_application';
         $_POST['client_secret'] = 'client_secret';
 
-        $responseToken = $this->server->handleTokenRequest(Request::createFromGlobals())->getResponseBody();
+        $responseString = $this->server->handleTokenRequest(Request::createFromGlobals())->getResponseBody();
+        $responseObject = json_decode($responseString);
 
-        AuthorizationModel::saveAdminAccessToSession($responseToken);
+        if (isset($responseObject->error)) {
+            $this->getMessages()->addMessage('error', $responseObject->error_description);
+
+            return $response->withRedirect(
+                $this->getRouter()->urlFor('admin.login')
+            );
+        }
+
+        AuthorizationModel::saveAdminAccessToSession($responseObject);
+
+        $this->getMessages()->addMessage('success', 'Erfolgreich eingeloggt');
 
         return $response->withRedirect(
             $this->getRouter()->urlFor('admin.dashboard')
         );
+
     }
 
     public function revokeAdminPost()

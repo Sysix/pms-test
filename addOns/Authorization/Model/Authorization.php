@@ -6,6 +6,15 @@ use OAuth2\Request;
 
 class Authorization
 {
+    public static function addAccessSessionToRequest(\Slim\Http\Request $request)
+    {
+        if (isset($_SESSION['oAuth2'])) {
+            $request = $request->withQueryParams(array_merge($request->getQueryParams(), $_SESSION['oAuth2']));
+        }
+
+        return $request;
+    }
+
     public static function createGlobalRequestWithAccessSession()
     {
         $response = Request::createFromGlobals();
@@ -18,9 +27,8 @@ class Authorization
 
     public static function saveAdminAccessToSession($response)
     {
-        $data = json_decode($response);
         $_SESSION['oAuth2'] = [];
-        foreach ($data as $key => $value) {
+        foreach ($response as $key => $value) {
             $_SESSION['oAuth2'][$key] = $value;
         }
     }
