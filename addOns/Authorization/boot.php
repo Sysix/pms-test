@@ -74,27 +74,66 @@ $app
     ->add($authMiddleware->withRequiredScope(['loggedIn']));
 
 $app
-    ->get('/admin/oauth2/clients', 'AddOn\\Authorization\\Controller\\Admin\\OAuth2:clientsGet')
-    ->setName('admin.oauth2.clients')
-    ;
-
-$app
-    ->get('/admin/oauth2/clients/add', 'AddOn\\Authorization\\Controller\\Admin\\OAuth2:clientsAddGet')
-    ->setName('admin.oauth2.clients.add')
-    ;
-
-$app->get('/admin/oauth2/clients/delete/{client_id}', 'AddOn\\Authorization\\Controller\\Admin\\OAuth2:clientsDelete')->setName('admin.oauth2.clients.delete')->add($authMiddleware->withRequiredScope(['loggedIn']));
-$app->get('/admin/oauth2/clients/edit/{client_id}', 'AddOn\\Authorization\\Controller\\Admin\\OAuth2:clientsEditGet')->setName('admin.oauth2.clients.edit')->add($authMiddleware->withRequiredScope(['loggedIn']));
-
-$app->post('/admin/oauth2/clients', 'AddOn\\Authorization\\Controller\\Admin\\OAuth2:clientsCreate');
-$app->post('/admin/oauth2/clients/{client_id}', 'AddOn\\Authorization\\Controller\\Admin\\OAuth2:clientsUpdate')->setName('admin.oauth2.clients.update');
+    ->post('/admin/logout', 'AddOn\\Authorization\\Controller\\Authorization:revokeAdminPost')
+    ->setName('admin.logout');
 
 
-$app->post('/authorization', 'AddOn\\Authorization\\Controller\\Authorization:indexPost')->setName('authorization');
-$app->post('/authorization/admin', 'AddOn\\Authorization\\Controller\\Authorization:adminPost')->setName('authorization.admin');
-$app->post('/authorization/revoke', 'AddOn\\Authorization\\Controller\\Authorization:revokePost')->setName('authorization.revoke');
-$app->post('/admin/logout', 'AddOn\\Authorization\\Controller\\Authorization:revokeAdminPost')->setName('admin.logout');
+$app->group('/admin/oauth2/clients', function () {
+    $controller = 'AddOn\\Authorization\\Controller\\Admin\\Clients';
 
-$app->put('/oauth2/clients', 'AddOn\\Authorization\\Controller\\Client:create')->setName('oauth2.clients.create');
-$app->delete('/oauth2/clients/{client_id}', 'AddOn\\Authorization\\Controller\\Client:delete')->setName('oauth2.clients.delete');
-$app->post('/oauth2/clients/{client_id}', 'AddOn\\Authorization\\Controller\\Client:update')->setName('oauth2.clients.update');
+    $this
+        ->map(['GET'], '', $controller . ':index')
+        ->setName('admin.oauth2.clients');
+
+    $this
+        ->get('/add', $controller . ':add')
+        ->setName('admin.oauth2.clients.add');
+
+    $this
+        ->get('/delete/{client_id}', $controller . ':delete')
+        ->setName('admin.oauth2.clients.delete');
+
+    $this
+        ->get('/edit/{client_id}', $controller . ':edit')
+        ->setName('admin.oauth2.clients.edit');
+
+    $this
+        ->map(['POST'], '', $controller . ':create')
+        ->setName('admin.oauth2.clients.create');
+
+    $this
+        ->post('/{client_id}', $controller . ':update')
+        ->setName('admin.oauth2.clients.update');
+});
+
+$app->group('/authorization', function () {
+    $controller = 'AddOn\\Authorization\\Controller\\Authorization';
+
+    $this
+        ->map(['POST'], '', $controller . ':indexPost')
+        ->setName('authorization');
+
+    $this
+        ->post('/admin', $controller . ':adminPost')
+        ->setName('authorization.admin');
+
+    $this
+        ->post('/revoke', $controller . ':revokePost')
+        ->setName('authorization.revoke');
+});
+
+$app->group('/oauth2/clients', function () {
+    $controller = 'AddOn\\Authorization\\Controller\\Client';
+
+    $this
+        ->map(['PUT'], '', $controller . ':create')
+        ->setName('oauth2.clients.create');
+
+    $this
+        ->delete('/{client_id}', $controller . ':delete')
+        ->setName('oauth2.clients.delete');
+
+    $this
+        ->post('/{client_id}', $controller . ':update')
+        ->setName('oauth2.clients.update');
+});
