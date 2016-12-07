@@ -9,6 +9,33 @@ use Slim\Http\Response;
 
 class Client extends Controller
 {
+    public function get(Request $request, Response $response, $args)
+    {
+        $clients = new ClientModel();
+
+        try {
+            if (isset($args['client_id'])) {
+                $entity = $clients->getMapper()->where([
+                    'client_id' => $args['client_id']
+                ])->first();
+
+                if (!$entity) {
+                    throw new \Exception('no client with client_id ' . $args['client_id'] . ' found');
+                }
+            } else {
+                $entity = $clients->getMapper()->all();
+            }
+
+
+            return $entity;
+        } catch (\Exception $e) {
+
+            return $response->withStatus(400)->withJson([
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function update(Request $request, Response $response, $args)
     {
         $clients = new ClientModel();
