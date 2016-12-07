@@ -126,6 +126,10 @@ $app->group('/oauth2/clients', function () {
     $controller = 'AddOn\\Authorization\\Controller\\Client';
 
     $this
+        ->map(['GET'], '', $controller . ':get')
+        ->setName('oauth2.clients.get');
+
+    $this
         ->map(['PUT'], '', $controller . ':create')
         ->setName('oauth2.clients.create');
 
@@ -136,4 +140,24 @@ $app->group('/oauth2/clients', function () {
     $this
         ->post('/{client_id}', $controller . ':update')
         ->setName('oauth2.clients.update');
+});
+
+$app->group('/oauth2/scopes', function () {
+    $controller = 'AddOn\\Authorization\\Controller\\Scope';
+
+    $this
+        ->map(['GET'], '', $controller . ':get')
+        ->setName('oauth2.scopes.get');
+
+    $this
+        ->map(['PUT'], '', $controller . ':create')
+        ->setName('oauth2.scopes.create');
+
+    $this
+        ->delete('/{scope}', $controller . ':delete')
+        ->setName('oauth2.scopes.delete');
+
+    $this
+        ->post('/{scope}', $controller . ':update')
+        ->setName('oauth2.scopes.update');
 });
