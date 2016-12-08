@@ -5,8 +5,16 @@
     <meta charset="utf-8">
     <title>Admin</title>
     <link href="/vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="/vendor/select2/dist/css/select2.css" rel="stylesheet">
     <link href="/vendor/font-awesome/css/font-awesome.css" rel="stylesheet">
     {% block stylesheet %}
+
+    {% endblock %}
+
+    <!-- TODO: create resource handler for automatic add or delete from sub view -->
+    <script src="/vendor/jquery/dist/jquery.js"></script>
+    <script src="/vendor/select2/dist/js/select2.js"></script>
+    {% block scripts %}
 
     {% endblock %}
 </head>
@@ -27,5 +35,8 @@
     {% endblock %}
 </div>
 
+{% block inline_scripts %}
+
+{% endblock %}
 </body>
 </html>
