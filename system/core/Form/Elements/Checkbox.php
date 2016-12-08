@@ -13,6 +13,8 @@ use PmsOne\Form\Elements\Type\MultiValue;
 
 class Checkbox extends MultiValue
 {
+    public $viewTemplate = 'form/checkbox.twig';
+
     /**
      * @param $name
      * @param $value
@@ -35,7 +37,7 @@ class Checkbox extends MultiValue
     public function render()
     {
         return $this->view
-            ->setTemplate('form/checkbox.twig')
+            ->setTemplate($this->viewTemplate)
             ->addVar('options', $this->getOptions())
             ->render();
     }

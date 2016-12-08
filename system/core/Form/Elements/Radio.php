@@ -7,6 +7,8 @@ use PmsOne\Form\Elements\Type\MultiValue;
 
 class Radio extends MultiValue
 {
+    public $viewTemplate = 'form/radio.twig';
+
     /**
      * @param $name
      * @param $value
@@ -29,7 +31,7 @@ class Radio extends MultiValue
     public function render()
     {
         return $this->view
-            ->setTemplate('form/radio.twig')
+            ->setTemplate($this->viewTemplate)
             ->addVar('options', $this->getOptions())
             ->render();
     }

@@ -7,6 +7,7 @@ use PmsOne\Form\Elements\Type\SingleValue;
 
 class Input extends SingleValue
 {
+    public $viewTemplate = 'form/input.twig';
 
     public function render()
     {
@@ -15,9 +16,9 @@ class Input extends SingleValue
             ->addAttribute('value', $this->getValue());
 
         return $this->view
-            ->setTemplate('form/input.twig')
+            ->setTemplate($this->viewTemplate)
             ->addVar('label', $this->getName())
-            ->addVar('attributes' , $this->getAttributes())
+            ->addVar('attributes', $this->getAttributes())
             ->render();
     }
 }

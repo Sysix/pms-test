@@ -7,6 +7,8 @@ use PmsOne\Form\Elements\Type\MultiValue;
 
 class Select extends MultiValue
 {
+    public $viewTemplate = 'form/select.twig';
+
     /**
      * @param bool $multiple
      * @return $this
@@ -52,7 +54,7 @@ class Select extends MultiValue
             ->addAttribute('name', $this->getName());
 
         return $this->view
-            ->setTemplate('form/select.twig')
+            ->setTemplate($this->viewTemplate)
             ->addVar('label', $this->getName())
             ->addVar('options', $this->getOptions())
             ->addVar('attributes', $this->getAttributes())

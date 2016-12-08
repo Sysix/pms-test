@@ -12,7 +12,7 @@ use PmsOne\View;
 abstract class SingleValue
 {
     use Attributes;
-    
+
     public $name;
     public $defaultValue;
 
@@ -24,6 +24,8 @@ abstract class SingleValue
     protected $view;
 
     public $wrapperView = 'form/element-wrapper-default.twig';
+
+    public $viewTemplate = null;
 
     /**
      * @param string $name
@@ -128,6 +130,16 @@ abstract class SingleValue
         return $this->getAttribute('id');
     }
 
+    /**
+     * @param $view
+     * @return $this
+     */
+    public function setViewTemplate($view)
+    {
+        $this->viewTemplate = $view;
+
+        return $this;
+    }
 
 
     /**
