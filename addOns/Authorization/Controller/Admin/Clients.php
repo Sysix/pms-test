@@ -3,6 +3,7 @@
 namespace AddOn\Authorization\Controller\Admin;
 
 use AddOn\Authorization\Model\Client;
+use AddOn\Authorization\Model\Scope;
 use PmsOne\Form\Form;
 use PmsOne\Page\Controller;
 use Slim\Http\Request;
@@ -97,8 +98,17 @@ class Clients extends Controller
         $form->addTextElement('grant_types', '')
             ->setLabel('Grant Types');
 
-        $form->addTextElement('scope', '')
+        $scopeModel = new Scope();
+
+        $scopeElement = $form->addSelectElement('scope', '')
+            ->setMultiple()
+            ->setViewTemplate('@authorization/form/scope-select.twig')
             ->setLabel('Access');
+
+        $scopes = $scopeModel->getMapper()->select();
+        foreach ($scopes as $scope) {
+            $scopeElement->addOption($scope->scope, $scope->scope);
+        }
 
         $view = $this->getView();
         $view->setTemplate('@authorization/oauth2/clients.form.twig');
@@ -136,8 +146,17 @@ class Clients extends Controller
         $form->addTextElement('grant_types', $client->grant_types)
             ->setLabel('Grant Types');
 
-        $form->addTextElement('scope', $client->scope)
+        $scopeModel = new Scope();
+
+        $scopeElement = $form->addSelectElement('scope', explode(' ', $client->scope))
+            ->setMultiple()
+            ->setViewTemplate('@authorization/form/scope-select.twig')
             ->setLabel('Access');
+
+        $scopes = $scopeModel->getMapper()->select();
+        foreach ($scopes as $scope) {
+            $scopeElement->addOption($scope->scope, $scope->scope);
+        }
 
         $view = $this->getView();
         $view->setTemplate('@authorization/oauth2/clients.form.twig');

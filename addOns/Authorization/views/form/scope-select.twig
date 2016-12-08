@@ -1,0 +1,13 @@
+<select{{ attributes|formatAttribute }}>
+    {% for option in options %}
+        <option{{ option.attributes|formatAttribute }}>{{ option.name }}</option>
+    {% endfor %}
+</select>
+
+<script>
+
+    $('#{{ attributes.id }}').select2({
+        tags: true
+    });
+
+</script>
