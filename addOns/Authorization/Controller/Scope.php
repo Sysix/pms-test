@@ -14,13 +14,13 @@ class Scope extends Controller
         $scopes = new ScopeModel();
 
         try {
-            if (isset($args['scope'])) {
+            if ($request->getParam('scope')) {
                 $entity = $scopes->getMapper()->where([
-                    'scope' => $args['scope']
-                ])->first();
+                    'scope :like' => '%' . $request->getParam('scope') . '%'
+                ]);
 
                 if (!$entity) {
-                    throw new \Exception('no scope with name ' . $args['scope'] . ' found');
+                    throw new \Exception('no scope with name ' . $request->getParam('scope') . ' found');
                 }
             } else {
                 $entity = $scopes->getMapper()->all();

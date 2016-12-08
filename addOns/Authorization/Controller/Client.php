@@ -14,13 +14,13 @@ class Client extends Controller
         $clients = new ClientModel();
 
         try {
-            if (isset($args['client_id'])) {
+            if ($request->getParam('client_id')) {
                 $entity = $clients->getMapper()->where([
-                    'client_id' => $args['client_id']
+                    'client_id' => $request->getParam('client_id')
                 ])->first();
 
                 if (!$entity) {
-                    throw new \Exception('no client with client_id ' . $args['client_id'] . ' found');
+                    throw new \Exception('no client with client_id ' . $request->getParam('client_id') . ' found');
                 }
             } else {
                 $entity = $clients->getMapper()->all();
@@ -50,7 +50,11 @@ class Client extends Controller
             }
 
             /** @var \Spot\EntityInterface $entity */
-            $entity->data($request->getParams());
+            $params = $request->getParams();
+            if (is_array($params['scope'])) {
+                $params['scope'] = implode(' ', $params['scope']);
+            }
+            $entity->data($params);
 
             $clients->getMapper()->update($entity);
 
@@ -69,6 +73,9 @@ class Client extends Controller
 
         try {
             $params = $request->getParams();
+            if (is_array($params['scope'])) {
+                $params['scope'] = implode(' ', $params['scope']);
+            }
             $entity = $clients->getMapper()->create($params);
 
             return $entity;
