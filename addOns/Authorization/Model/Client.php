@@ -41,6 +41,32 @@ class Client extends DataObject
         ];
     }
 
+    public function updateScopes($oldScope, $newScope)
+    {
+        $clients = $this->getMapper()->where([
+            'scope :like' => '%' . $oldScope . '%'
+        ]);
+
+        /** @var EntityInterface $client */
+        foreach ($clients as $client) {
+            $scopes = explode(' ', $client->scope);
+
+            if (in_array($oldScope, $scopes)) {
+                $key = array_search($oldScope, $scopes);
+
+                $scopes[$key] = $newScope;
+
+                $client->data(array(
+                    'scope' => implode(' ', $scopes)
+                ));
+
+                $this->getMapper()->update($client);
+            }
+        }
+
+        return $this;
+    }
+
     public static function relations(MapperInterface $mapper, EntityInterface $entity)
     {
         return [

@@ -74,7 +74,8 @@ View::setUpTwig($app, Dir::view());
 
 // Navigation
 $navigation = new \PmsOne\Navigation('main-navigation');
-$navigation->addClass('col col-md-3 nav');
+$navigation->addClass('col col-md-2 nav');
+$navigation->addAttribute('id', 'nav');
 
 $container['navigation'] = function () use ($navigation) {
     return $navigation;

@@ -1,0 +1,38 @@
+#nav {
+    background: #000609;
+    color: #fff;
+    min-height: 100vh;
+}
+
+#nav ul {
+    list-style: none;
+    margin: 0 0 0 20px;
+    padding: 0;
+}
+
+#nav li {
+    padding: 5px 10px;
+}
+
+#nav a {
+    color: #fff;
+}
+
+#nav > li > a:hover,
+#nav > li > a:focus {
+    background: none;
+    color: #333333;
+}
+
+#header {
+    background: #171717;
+    color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+#header h1 {
+    font-size: 23px;
+    margin: 0;
+    font-weight: 400;
+}

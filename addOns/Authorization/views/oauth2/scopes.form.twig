@@ -5,12 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-9">
-        <h2 class="pull-left">oAuth2 - Scopes</h2>
-        <div class="pull-right">
-            <a class="btn btn-warning" href="{{ path_for('admin.oauth2.scopes') }}"><i class="fa fa-arrow-left"></i> Zurück</a>
-        </div>
-        <div class="clearfix"></div>
-       {{ form.render()|raw }}
+    <h2 class="pull-left">oAuth2 - Scopes</h2>
+    <div class="pull-right">
+        <a class="btn btn-warning" href="{{ path_for('admin.oauth2.scopes') }}"><i class="fa fa-arrow-left"></i> Zurück</a>
     </div>
+    <div class="clearfix"></div>
+    {{ form.render()|raw }}
 {% endblock %}

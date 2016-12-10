@@ -5,44 +5,42 @@
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-9">
-        <h2 class="pull-left">oAuth2 - Clients</h2>
-        <div class="pull-right">
-            <a class="btn btn-info" href="{{ path_for('admin.oauth2.clients.add') }}"><i class="fa fa-plus"></i>
-                Hinzufügen</a>
-        </div>
-        <div class="clearfix"></div>
-        {{ messages|raw }}
-        {% if clients|length %}
-            <table class="table table-striped">
-                <tr>
-                    <th>Id</th>
-                    <th>User</th>
-                    <th>Redirect Uri</th>
-                    <th>Grant Types</th>
-                    <th>Scope</th>
-                    <th>Actions</th>
-                </tr>
-                {% for client in clients %}
-                    <tr>
-                        <td>{{ client.client_id }}</td>
-                        <td><a href="#{{ client.user_id }}">{{ client.user.username }}</a></td>
-                        <td>{{ client.redirect_uri }}</td>
-                        <td>{{ client.grant_types }}</td>
-                        <td>{{ client.scope }}</td>
-                        <td>
-                            <a href="{{ path_for('admin.oauth2.clients.edit', {
-                                client_id:  client.client_id
-                            }) }}" class="btn btn-default"><i class="fa fa-edit"></i></a>
-                            <a href="{{ path_for('admin.oauth2.clients.delete', {
-                                client_id:  client.client_id
-                            }) }}" class="btn btn-warning"><i class="fa fa-trash"></i></a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-            <div class="alert alert-warning">Keine Clients vorhanden</div>
-        {% endif %}
+    <h2 class="pull-left">oAuth2 - Clients</h2>
+    <div class="pull-right">
+        <a class="btn btn-info" href="{{ path_for('admin.oauth2.clients.add') }}"><i class="fa fa-plus"></i>
+            Hinzufügen</a>
     </div>
+    <div class="clearfix"></div>
+    {{ messages|raw }}
+    {% if clients|length %}
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>User</th>
+                <th>Redirect Uri</th>
+                <th>Grant Types</th>
+                <th>Scope</th>
+                <th>Actions</th>
+            </tr>
+            {% for client in clients %}
+                <tr>
+                    <td>{{ client.client_id }}</td>
+                    <td><a href="#{{ client.user_id }}">{{ client.user.username }}</a></td>
+                    <td>{{ client.redirect_uri }}</td>
+                    <td>{{ client.grant_types }}</td>
+                    <td>{{ client.scope }}</td>
+                    <td>
+                        <a href="{{ path_for('admin.oauth2.clients.edit', {
+                            client_id:  client.client_id
+                        }) }}" class="btn btn-default"><i class="fa fa-edit"></i></a>
+                        <a href="{{ path_for('admin.oauth2.clients.delete', {
+                            client_id:  client.client_id
+                        }) }}" class="btn btn-warning"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="alert alert-warning">Keine Clients vorhanden</div>
+    {% endif %}
 {% endblock %}
