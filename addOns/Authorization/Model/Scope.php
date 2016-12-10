@@ -12,11 +12,12 @@ class Scope extends DataObject
     {
         return [
             'scope' => [
-                'type' => 'text',
+                'type' => 'string',
                 'primary' => true
             ],
             'is_default' => [
-                'type' => 'boolean'
+                'type' => 'boolean',
+                'default' => 0
             ]
         ];
     }

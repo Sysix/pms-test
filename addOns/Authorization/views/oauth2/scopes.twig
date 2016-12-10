@@ -1,0 +1,42 @@
+{% extends "admin/base.twig" %}
+
+{% block title %}
+    {{ parent() }} - OAuth2 - Scopes
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-9">
+        <h2 class="pull-left">oAuth2 - Scopes</h2>
+        <div class="pull-right">
+            <a class="btn btn-info" href="{{ path_for('admin.oauth2.scopes.add') }}"><i class="fa fa-plus"></i>
+                Hinzufügen</a>
+        </div>
+        <div class="clearfix"></div>
+        {{ messages|raw }}
+        {% if scopes|length %}
+            <table class="table table-striped">
+                <tr>
+                    <th>Scope</th>
+                    <th>is_default</th>
+                    <th>Actions</th>
+                </tr>
+                {% for scope in scopes %}
+                    <tr>
+                        <td>{{ scope.scope }}</td>
+                        <td>{{ scope.is_default }}</td>
+                        <td>
+                            <a href="{{ path_for('admin.oauth2.scopes.edit', {
+                                scope:  scope.scope
+                            }) }}" class="btn btn-default"><i class="fa fa-edit"></i></a>
+                            <a href="{{ path_for('admin.oauth2.scopes.delete', {
+                                scope:  scope.scope
+                            }) }}" class="btn btn-warning"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <div class="alert alert-warning">Keine Scopes vorhanden</div>
+        {% endif %}
+    </div>
+{% endblock %}

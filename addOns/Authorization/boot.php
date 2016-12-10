@@ -106,6 +106,35 @@ $app->group('/admin/oauth2/clients', function () {
         ->setName('admin.oauth2.clients.update');
 });
 
+$app->group('/admin/oauth2/scopes', function() {
+    $controller = 'AddOn\\Authorization\\Controller\\Admin\\Scopes';
+
+    $this
+        ->map(['GET'], '', $controller . ':index')
+        ->setName('admin.oauth2.scopes');
+
+    $this
+        ->get('/add', $controller . ':add')
+        ->setName('admin.oauth2.scopes.add');
+
+    $this
+        ->get('/delete/{scope}', $controller . ':delete')
+        ->setName('admin.oauth2.scopes.delete');
+
+    $this
+        ->get('/edit/{scope}', $controller . ':edit')
+        ->setName('admin.oauth2.scopes.edit');
+
+    $this
+        ->map(['POST'], '', $controller . ':create')
+        ->setName('admin.oauth2.scopes.create');
+
+    $this
+        ->post('/{scope}', $controller . ':update')
+        ->setName('admin.oauth2.scopes.update');
+
+});
+
 $app->group('/authorization', function () {
     $controller = 'AddOn\\Authorization\\Controller\\Authorization';
 
