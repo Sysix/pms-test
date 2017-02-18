@@ -3,13 +3,14 @@
 namespace PmsOne\Form\Elements\Type;
 
 
+use PmsOne\Form\Elements\FormElementInterface;
 use PmsOne\Html\Attributes;
 use PmsOne\View;
 
 /**
  * Class SingleValue
  */
-abstract class SingleValue
+abstract class SingleValue implements FormElementInterface
 {
     use Attributes;
 
@@ -23,18 +24,16 @@ abstract class SingleValue
     /** @var View $view */
     protected $view;
 
-    public $wrapperView = 'form/element-wrapper-default.twig';
-
     public $viewTemplate = null;
 
     /**
      * @param string $name
      * @param string $value
      */
-    public function __construct($name, $value)
+    public function __construct($name, $value = '')
     {
         $this->setName($name)
-            ->setDefaultValue($value);
+            ->setValue($value);
 
         $this->view = new View();
 
@@ -80,26 +79,7 @@ abstract class SingleValue
             return $this->value;
         }
 
-        return $this->defaultValue;
-    }
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    protected function setDefaultValue($value)
-    {
-        $this->defaultValue = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultValue()
-    {
-        return $this->defaultValue;
+        return null;
     }
 
 
@@ -139,6 +119,11 @@ abstract class SingleValue
         $this->viewTemplate = $view;
 
         return $this;
+    }
+
+    public function getViewTemplate()
+    {
+        return $this->viewTemplate;
     }
 
 

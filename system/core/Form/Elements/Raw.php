@@ -8,7 +8,7 @@ class Raw extends SingleValue
 {
     static $count = 0;
 
-    public function __construct($value)
+    public function __construct($name, $value = '')
     {
         parent::__construct('raw-element-' . self::$count, $value);
 

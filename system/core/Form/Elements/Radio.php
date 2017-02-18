@@ -9,12 +9,6 @@ class Radio extends MultiValue
 {
     public $viewTemplate = 'form/radio.twig';
 
-    /**
-     * @param $name
-     * @param $value
-     * @param array $attributes
-     * @return $this
-     */
     public function addOption($name, $value, $attributes = [])
     {
         $attributes['value'] = $value;

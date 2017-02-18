@@ -8,7 +8,7 @@ class Button extends SingleValue
 {
     public $viewTemplate = 'form/button.twig';
 
-    public function __construct($name, $value)
+    public function __construct($name, $value = '')
     {
         parent::__construct($name, $value);
 

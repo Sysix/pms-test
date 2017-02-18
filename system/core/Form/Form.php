@@ -3,13 +3,8 @@
 namespace PmsOne\Form;
 
 use PmsOne\Form\Elements\Button;
-use PmsOne\Form\Elements\Checkbox;
-use PmsOne\Form\Elements\Input;
-use PmsOne\Form\Elements\Radio;
-use PmsOne\Form\Elements\Raw;
-use PmsOne\Form\Elements\Select;
-use PmsOne\Form\Elements\Textarea;
-use PmsOne\Form\Elements\Type\SingleValue;
+use PmsOne\Form\Elements\FormElementInterface;
+use PmsOne\Form\Elements\Type\MultiValue;
 use PmsOne\Html\Attributes;
 use PmsOne\View;
 
@@ -20,11 +15,8 @@ class Form
     public $formMethod;
     public $formAction;
 
-    /** @var SingleValue[] $elements */
+    /** @var FormElementInterface[] $elements */
     public $elements = [];
-
-    /** @var Input[] $hiddenElements */
-    public $hiddenElements = [];
 
     /** @var Button[] $actionButtons */
     public $actionButtons = [];
@@ -105,34 +97,27 @@ class Form
     }
 
     /**
-     * @param SingleValue $element
-     * @return SingleValue
+     * @param FormElementInterface $element
+     * @return FormElementInterface|MultiValue
      */
-    public function addElement(SingleValue $element)
+    public function addElement(FormElementInterface $element)
     {
+        $this->elements[$element->getName()] = $element;
         $this->elementOptions[$element->getName()] = [];
 
-        if ($element->getAttribute('type') == 'hidden') {
-            $this->hiddenElements[$element->getName()] = $element;
-        } else {
-            $this->elements[$element->getName()] = $element;
-        }
+        $this->addElementOption($element->getName(), 'wrapperView', 'form/element-wrapper-default.twig');
 
         return $element;
     }
 
     /**
      * @param $name
-     * @return SingleValue|null
+     * @return FormElementInterface|null
      */
     public function getElement($name)
     {
         if ($this->isElement($name)) {
             return $this->elements[$name];
-        }
-
-        if (isset($this->hiddenElements[$name])) {
-            return $this->hiddenElements[$name];
         }
 
         return null;
@@ -154,6 +139,7 @@ class Form
     public function deleteElement($name)
     {
         unset($this->elements[$name]);
+        unset($this->elementOptions[$name]);
 
         return $this;
     }
@@ -207,145 +193,12 @@ class Form
         return $this;
     }
 
-    /**
-     * @param $name
-     * @param $value
-     * @param $type
-     * @return Input
-     */
-    protected function addInputElement($name, $value, $type)
-    {
-        $element = new Input($name, $value);
-        $element->addAttribute('type', $type);
-
-        return $this->addElement($element);
-    }
 
     /**
-     * @param $name
-     * @param $value
-     * @return Input
-     */
-    public function addTextElement($name, $value)
-    {
-        return $this->addInputElement($name, $value, 'text');
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Input
-     */
-    public function addPasswordElement($name, $value)
-    {
-        return $this->addInputElement($name, $value, 'password');
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Input
-     */
-    public function addUrlElement($name, $value)
-    {
-        return $this->addInputElement($name, $value, 'url');
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Input
-     */
-    public function addDateElement($name, $value)
-    {
-        return $this->addInputElement($name, $value, 'date');
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Input
-     */
-    public function addNumberElement($name, $value)
-    {
-        return $this->addInputElement($name, $value, 'number');
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Input
-     */
-    public function addEmailElement($name, $value)
-    {
-        return $this->addInputElement($name, $value, 'email');
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Input
-     */
-    public function addHiddenElement($name, $value)
-    {
-        return $this->addInputElement($name, $value, 'hidden');
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Textarea
-     */
-    public function addTextareaElement($name, $value)
-    {
-        return $this->addElement(new Textarea($name, $value));
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Select
-     */
-    public function addSelectElement($name, $value)
-    {
-        return $this->addElement(new Select($name, $value));
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Radio
-     */
-    public function addRadioElement($name, $value)
-    {
-        return $this->addElement(new Radio($name, $value));
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @return Checkbox
-     */
-    public function addCheckboxElement($name, $value)
-    {
-        return $this->addElement(new Checkbox($name, $value));
-    }
-
-    /**
-     * @param $value
-     * @return Raw
-     */
-    public function addRawElement($value)
-    {
-        return $this->addElement(new Raw($value));
-    }
-
-
-    /**
-     * @param SingleValue $element
+     * @param FormElementInterface $element
      * @return string
      */
-    public function renderElement(SingleValue $element)
+    public function renderElement(FormElementInterface $element)
     {
         static $count = 0;
 
@@ -357,10 +210,27 @@ class Form
 
         $view = new View();
         return $view
-            ->setTemplate($element->wrapperView)
+            ->setTemplate($this->getElementOption($element->getName(), 'wrapperView'))
             ->addVar('element', $element)
             ->addVar('attributes', $element->getAttributes())
             ->render();
+    }
+
+    /**
+     * @param FormElementInterface[] $elements
+     * @return FormElementInterface[]
+     */
+    protected function getAndRemoveHiddenElements(array &$elements)
+    {
+        $hiddenElements = [];
+        foreach ($elements as $name => $element) {
+            if ($element->getAttribute('type') == 'hidden') {
+                $hiddenElements[$name] = $element;
+                unset($elements[$name]);
+            }
+        }
+
+        return $hiddenElements;
     }
 
     /**
@@ -369,6 +239,8 @@ class Form
     public function render()
     {
         $elementsOutput = $this->elements;
+        $hiddenElements = $this->getAndRemoveHiddenElements($elementsOutput);
+
         $elementsOutput = array_map([$this, 'renderElement'], $elementsOutput);
 
         $view = new View();
@@ -376,7 +248,7 @@ class Form
             ->setTemplate('form/form.twig')
             ->addVar('elements', $elementsOutput)
             ->addVar('formAttributes', $this->attributes)
-            ->addVar('hiddenElements', $this->hiddenElements)
+            ->addVar('hiddenElements', $hiddenElements)
             ->addVar('actionButtons', $this->actionButtons)
             ->render();
     }

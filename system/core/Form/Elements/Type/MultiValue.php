@@ -13,7 +13,7 @@ abstract class MultiValue extends SingleValue
      * @param $name
      * @param $value
      */
-    public function __construct($name, $value)
+    public function __construct($name, $value = '')
     {
         parent::__construct($name, $value);
 
@@ -52,7 +52,7 @@ abstract class MultiValue extends SingleValue
      */
     public function isValue($value)
     {
-        return in_array($value, $this->getValue());
+        return in_array($value, (array)$this->getValue());
     }
 
     /**
