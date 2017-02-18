@@ -3,6 +3,8 @@
 namespace AddOn\Authorization\Controller\Admin;
 
 use AddOn\Authorization\Model\Scope;
+use PmsOne\Form\Elements\Input;
+use PmsOne\Form\Elements\Radio;
 use PmsOne\Form\Form;
 use PmsOne\Page\Controller;
 use Slim\Http\Request;
@@ -81,10 +83,11 @@ class Scopes extends Controller
     {
         $form = new Form($this->getRouter()->pathFor('admin.oauth2.scopes'));
 
-        $form->addTextElement('scope', '')
+        $form->addElement(new Input('scope'))
+            ->addAttribute('type', 'text')
             ->setLabel('Name');
 
-        $form->addRadioElement('is_default', 0)
+        $form->addElement(new Radio('is_default', 0))
             ->addOption(1, 'Ja')
             ->addOption(0, 'Nein')
             ->setLabel('Default');
@@ -108,10 +111,11 @@ class Scopes extends Controller
             'scope' => $args['scope']
         ]));
 
-        $form->addTextElement('scope', $scope->scope)
+        $form->addElement(new Input('scope', $scope->scope))
+            ->addAttribute('type', 'text')
             ->setLabel('Name');
 
-        $form->addRadioElement('is_default', $scope->is_default)
+        $form->addElement(new Radio('is_default', $scope->is_default))
             ->addOption(1, 'Ja')
             ->addOption(0, 'Nein')
             ->setLabel('Default');

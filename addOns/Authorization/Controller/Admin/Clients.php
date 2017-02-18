@@ -4,6 +4,8 @@ namespace AddOn\Authorization\Controller\Admin;
 
 use AddOn\Authorization\Model\Client;
 use AddOn\Authorization\Model\Scope;
+use PmsOne\Form\Elements\Input;
+use PmsOne\Form\Elements\Select;
 use PmsOne\Form\Form;
 use PmsOne\Page\Controller;
 use Slim\Http\Request;
@@ -82,25 +84,29 @@ class Clients extends Controller
     {
         $form = new Form($this->getRouter()->pathFor('admin.oauth2.clients'));
 
-        $form->addSelectElement('user_id', '')
+        $form->addElement(new Select('user_id'))
             ->addOption('admin', '1')
             ->setLabel('User');
 
-        $form->addTextElement('client_id', '')
+        $form->addElement(new Input('client_id'))
+            ->addAttribute('type', 'text')
             ->setLabel('Client ID');
 
-        $form->addPasswordElement('client_secret', '')
+        $form->addElement(new Input('client_secret'))
+            ->addAttribute('type', 'password')
             ->setLabel('Password');
 
-        $form->addUrlElement('redirect_uri', '')
+        $form->addElement(new Input('redirect_uri'))
+            ->addAttribute('type', 'url')
             ->setLabel('Redirect URL');
 
-        $form->addTextElement('grant_types', '')
+        $form->addElement(new Input('grant_types'))
+            ->addAttribute('type', 'text')
             ->setLabel('Grant Types');
 
         $scopeModel = new Scope();
 
-        $scopeElement = $form->addSelectElement('scope', '')
+        $scopeElement = $form->addElement(new Select('scope'))
             ->setMultiple()
             ->setViewTemplate('@authorization/form/scope-select.twig')
             ->setLabel('Access');
@@ -129,26 +135,30 @@ class Clients extends Controller
             'client_id' => $args['client_id']
         ]));
 
-        $form->addSelectElement('user_id', '')
+        $form->addElement(new Select('user_id'))
             ->addOption('admin', '1')
             ->setLabel('User');
 
-        $form->addTextElement('client_id', $client->client_id)
+        $form->addElement(new Input('client_id', $client->client_id))
+            ->addAttribute('type', 'text')
             ->addAttribute('disabled')
             ->setLabel('Client ID');
 
-        $form->addPasswordElement('client_secret', $client->client_secret)
+        $form->addElement(new Input('client_secret', $client->client_secret))
+            ->addAttribute('type', 'password')
             ->setLabel('Password');
 
-        $form->addUrlElement('redirect_uri', $client->redirect_uri)
+        $form->addElement(new Input('redirect_uri', $client->redirect_uri))
+            ->addAttribute('type', 'url')
             ->setLabel('Redirect URL');
 
-        $form->addTextElement('grant_types', $client->grant_types)
+        $form->addElement(new Input('grant_types', $client->grant_types))
+            ->addAttribute('type', 'text')
             ->setLabel('Grant Types');
 
         $scopeModel = new Scope();
 
-        $scopeElement = $form->addSelectElement('scope', explode(' ', $client->scope))
+        $scopeElement = $form->addElement(new Select('scope', explode(' ', $client->scope)))
             ->setMultiple()
             ->setViewTemplate('@authorization/form/scope-select.twig')
             ->setLabel('Access');

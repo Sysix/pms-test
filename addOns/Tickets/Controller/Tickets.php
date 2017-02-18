@@ -2,6 +2,8 @@
 
 namespace AddOn\Tickets\Controller;
 
+use PmsOne\Form\Elements\Input;
+use PmsOne\Form\Elements\Select;
 use PmsOne\Form\Form;
 use PmsOne\Page\Controller;
 use AddOn\Tickets\Model\Ticket as TicketModel;
@@ -30,10 +32,11 @@ class Tickets extends Controller
     {
         $form = new Form($this->getUri()->withPath('/tickets/save'));
 
-        $form->addTextElement('title', '')
+        $form->addElement(new Input('title'))
+            ->addAttribute('type', 'text')
             ->setLabel('Titel');
 
-        $form->addSelectElement('milestone', '')
+        $form->addElement(new Select('milestone'))
             ->addOption('option1', 'option1')
             ->addOption('option2', 'option2')
             ->setLabel('Milestone');

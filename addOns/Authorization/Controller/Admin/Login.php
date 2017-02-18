@@ -4,6 +4,7 @@ namespace AddOn\Authorization\Controller\Admin;
 
 use OAuth2\Request;
 use OAuth2\Server;
+use PmsOne\Form\Elements\Input;
 use PmsOne\Form\Form;
 use PmsOne\Page\Controller;
 use AddOn\Authorization\Model\Authorization as AuthorizationModel;
@@ -26,16 +27,19 @@ class Login extends Controller
 
         $form = new Form($this->getRouter()->pathFor('authorization.admin'));
 
-        $form->addTextElement('username', '')
+        $form->addElement(new Input('username'))
             ->addAttribute('placeholder', 'Username')
             ->addAttribute('autofocus')
+            ->addAttribute('type', 'hidden')
             ->setLabel('Username');
 
-        $form->addPasswordElement('password', '')
+        $form->addElement(new Input('password'))
             ->addAttribute('placeholder', 'password')
+            ->addAttribute('type', 'password')
             ->setLabel('Password');
 
-        $form->addHiddenElement('grant_type', 'password');
+        $form->addElement(new Input('grant_type', 'password'))
+            ->addAttribute('type', 'hidden');
 
         $form
             ->removeActionButton('back')
