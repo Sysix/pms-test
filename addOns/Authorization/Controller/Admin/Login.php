@@ -30,7 +30,7 @@ class Login extends Controller
         $form->addElement(new Input('username'))
             ->addAttribute('placeholder', 'Username')
             ->addAttribute('autofocus')
-            ->addAttribute('type', 'hidden')
+            ->addAttribute('type', 'text')
             ->setLabel('Username');
 
         $form->addElement(new Input('password'))
