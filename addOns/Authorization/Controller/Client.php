@@ -9,13 +9,11 @@ use Slim\Http\Response;
 
 class Client extends Controller
 {
-    public function get(Request $request, Response $response, $args)
+    public function get(Request $request, Response $response)
     {
-        $clients = new ClientModel();
-
         try {
             if ($request->getParam('client_id')) {
-                $entity = $clients->getMapper()->where([
+                $entity = ClientModel::getMapper()->where([
                     'client_id' => $request->getParam('client_id')
                 ])->first();
 
@@ -23,7 +21,7 @@ class Client extends Controller
                     throw new \Exception('no client with client_id ' . $request->getParam('client_id') . ' found');
                 }
             } else {
-                $entity = $clients->getMapper()->all();
+                $entity = ClientModel::getMapper()->all();
             }
 
 
@@ -36,12 +34,16 @@ class Client extends Controller
         }
     }
 
-    public function update(Request $request, Response $response, $args)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
+    public function update(Request $request, Response $response, array $args)
     {
-        $clients = new ClientModel();
-
         try {
-            $entity = $clients->getMapper()->where([
+            $entity = ClientModel::getMapper()->where([
                 'client_id' => $args['client_id']
             ])->first();
 
@@ -56,9 +58,9 @@ class Client extends Controller
             }
             $entity->data($params);
 
-            $clients->getMapper()->update($entity);
+            ClientModel::getMapper()->update($entity);
 
-            return $entity;
+            return $response->withStatus(200)->withJson($entity);
         } catch (\Exception $e) {
 
             return $response->withStatus(400)->withJson([
@@ -67,18 +69,21 @@ class Client extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
     public function create(Request $request, Response $response)
     {
-        $clients = new ClientModel();
-
         try {
             $params = $request->getParams();
             if (is_array($params['scope'])) {
                 $params['scope'] = implode(' ', $params['scope']);
             }
-            $entity = $clients->getMapper()->create($params);
+            $entity = ClientModel::getMapper()->create($params);
 
-            return $entity;
+            return $response->withStatus(200)->withJson($entity);
         } catch (\Exception $e) {
 
             return $response->withStatus(400)->withJson([
@@ -87,16 +92,23 @@ class Client extends Controller
         }
     }
 
-    public function delete(Request $request, Response $response, $args)
-    {
-        $clients = new ClientModel();
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     *
+     * @noinspection PhpUnusedParameterInspection
+     */
+    public function delete(Request $request, Response $response, array $args)
+    {
         try {
-            $entity = $clients->getMapper()->delete([
+            $entity = ClientModel::getMapper()->delete([
                 'client_id' => $args['client_id']
             ]);
 
-            return $entity;
+            return $response->withStatus(200)->withJson($entity);
         } catch (\Exception $e) {
 
             return $response->withStatus(400)->withJson([

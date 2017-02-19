@@ -40,12 +40,11 @@ class Select extends MultiValue
      */
     public function render()
     {
-        if ($this->getAttribute('multiple')) {
-            $this->addAttribute('name', $this->getAttribute('name') . '[]');
-        }
+        $this->addAttribute('name', $this->getName());
 
-        $this
-            ->addAttribute('name', $this->getName());
+        if ($this->hasAttribute('multiple')) {
+            $this->addAttribute('name', $this->getName() . '[]');
+        }
 
         return $this->view
             ->setTemplate($this->viewTemplate)

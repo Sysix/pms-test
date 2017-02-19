@@ -15,7 +15,7 @@ class Radio extends MultiValue
         $attributes['type'] = 'radio';
         $attributes['name'] = $this->getName();
 
-        if ($value == $this->getValue()) {
+        if (in_array($value, (array)$this->getValue())) {
             $attributes['checked'] = '';
         }
 

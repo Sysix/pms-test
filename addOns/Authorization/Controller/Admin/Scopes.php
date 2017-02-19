@@ -17,8 +17,7 @@ class Scopes extends Controller
         $view = $this->getView();
         $view->setTemplate('@authorization/oauth2/scopes.twig');
 
-        $scopeModel = new Scope();
-        $scopes = $scopeModel->getMapper()->all();
+        $scopes = Scope::getMapper()->all();
 
         $view->addVar('messages', $this->getMessages()->getView());
         $view->addVar('scopes', $scopes);
@@ -88,8 +87,8 @@ class Scopes extends Controller
             ->setLabel('Name');
 
         $form->addElement(new Radio('is_default', 0))
-            ->addOption(1, 'Ja')
-            ->addOption(0, 'Nein')
+            ->addOption('Ja', 1)
+            ->addOption('Nein', 0)
             ->setLabel('Default');
 
         $view = $this->getView();
@@ -101,9 +100,7 @@ class Scopes extends Controller
 
     public function edit(Request $request, Response $response, $args)
     {
-        $scopeMapper = new Scope();
-
-        $scope = $scopeMapper->getMapper()->first([
+        $scope = Scope::getMapper()->first([
             'scope' => $args['scope']
         ]);
 
@@ -116,8 +113,8 @@ class Scopes extends Controller
             ->setLabel('Name');
 
         $form->addElement(new Radio('is_default', $scope->is_default))
-            ->addOption(1, 'Ja')
-            ->addOption(0, 'Nein')
+            ->addOption('Ja', 1)
+            ->addOption('Nein', 0)
             ->setLabel('Default');
 
         $view = $this->getView();

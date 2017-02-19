@@ -11,9 +11,9 @@ class DataObject extends Entity
     /** @var  Sql $db */
     protected static $db;
 
-    public function getMapper()
+    public static function getMapper()
     {
-        return new Mapper(static::getDb(), get_class($this));
+        return new Mapper(static::getDb(), get_called_class());
     }
 
     public static function getDb()

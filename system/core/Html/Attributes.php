@@ -6,7 +6,7 @@ use PmsOne\Helper\Formatter;
 
 trait Attributes
 {
-    public $attributes;
+    public $attributes = [];
 
     /**
      * @param $key
@@ -60,7 +60,7 @@ trait Attributes
      */
     public function hasAttribute($key)
     {
-        return isset($this->attributes[$key]);
+        return isset($this->attributes[$key]) || array_key_exists($key, $this->attributes);
     }
 
     /**

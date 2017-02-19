@@ -18,8 +18,7 @@ class Clients extends Controller
         $view = $this->getView();
         $view->setTemplate('@authorization/oauth2/clients.twig');
 
-        $clientsModel = new Client();
-        $clients = $clientsModel->getMapper()->all()->with('user')->limit(10);
+        $clients = Client::getMapper()->all()->with('user')->limit(10);
 
         $view->addVar('messages', $this->getMessages()->getView());
         $view->addVar('clients', $clients);
@@ -125,9 +124,7 @@ class Clients extends Controller
 
     public function edit(Request $request, Response $response, $args)
     {
-        $clientMapper = new Client();
-
-        $client = $clientMapper->getMapper()->first([
+        $client = Client::getMapper()->first([
             'client_id' => $args['client_id']
         ]);
 
